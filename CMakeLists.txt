@@ -418,14 +418,17 @@ add_subdirectory(doc EXCLUDE_FROM_ALL)
 
 include(EigenConfigureTesting)
 
-# fixme, not sure this line is still needed:
-enable_testing() # must be called from the root CMakeLists, see man page
+option(EIGEN_ENABLE_TESTS "Enable creation of Eigen tests." ON)
+if(EIGEN_ENABLE_TESTS)
+  # fixme, not sure this line is still needed:
+  enable_testing() # must be called from the root CMakeLists, see man page
 
 
-if(EIGEN_LEAVE_TEST_IN_ALL_TARGET)
-  add_subdirectory(test) # can't do EXCLUDE_FROM_ALL here, breaks CTest
-else()
-  add_subdirectory(test EXCLUDE_FROM_ALL)
+  if(EIGEN_LEAVE_TEST_IN_ALL_TARGET)
+    add_subdirectory(test) # can't do EXCLUDE_FROM_ALL here, breaks CTest
+  else()
+    add_subdirectory(test EXCLUDE_FROM_ALL)
+  endif()
 endif()
 
 if(EIGEN_LEAVE_TEST_IN_ALL_TARGET)
