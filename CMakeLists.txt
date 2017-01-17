@@ -517,6 +517,11 @@ if (NOT CMAKE_VERSION VERSION_LESS 3.0)
   # Imported target support
   add_library (eigen INTERFACE)
 
+  option(EIGEN_DISABLE_CXX11_MATH "Disable C++11 math" OFF)
+  if(EIGEN_DISABLE_CXX11_MATH)
+    target_compile_definitions(eigen INTERFACE "EIGEN_HAS_CXX11_MATH=0")
+  endif()
+
   target_compile_definitions (eigen INTERFACE ${EIGEN_DEFINITIONS})
   target_include_directories (eigen INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
