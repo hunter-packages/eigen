@@ -524,10 +524,20 @@ if (NOT CMAKE_VERSION VERSION_LESS 3.0)
   # Imported target support
   add_library (eigen INTERFACE)
 
+  set(include_build_path ${CMAKE_CURRENT_SOURCE_DIR})
+  set(include_install_path ${INCLUDE_INSTALL_DIR})
+
+  # Include path for "unsupported" features
+  option(EIGEN_USE_UNSUPPORTED "Add include path to unsupported headers" ON)
+  if(EIGEN_USE_UNSUPPORTED)
+    list(APPEND include_build_path ${CMAKE_CURRENT_SOURCE_DIR}/unsupported)
+    list(APPEND include_install_path ${INCLUDE_INSTALL_DIR}/unsupported)
+  endif()
+
   target_compile_definitions (eigen INTERFACE ${EIGEN_DEFINITIONS})
   target_include_directories (eigen INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    "$<BUILD_INTERFACE:${include_build_path}>"
+    "$<INSTALL_INTERFACE:${include_install_path}>"
   )
 
   # Export as title case Eigen
